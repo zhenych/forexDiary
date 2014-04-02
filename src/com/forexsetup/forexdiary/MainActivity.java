@@ -298,7 +298,6 @@ public class MainActivity extends Activity implements OnItemSelectedListener, On
 		public MyResourceCursorAdapter(Context context, int layout, Cursor c,
 				boolean autoRequery) {
 			super(context, layout, c, autoRequery);
-			// TODO Auto-generated constructor stub
 		}
 
 		//@SuppressLint("NewApi")
@@ -307,7 +306,6 @@ public class MainActivity extends Activity implements OnItemSelectedListener, On
 				//int flags) 
 				{
 			super(context, layout, c);
-			// TODO Auto-generated constructor stub
 		}
 
 		@Override

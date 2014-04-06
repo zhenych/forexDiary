@@ -27,37 +27,33 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int LinearLayout1=0x7f090009;
-        public static final int LinearLayout2=0x7f090000;
-        public static final int action_settings=0x7f090017;
-        public static final int btnAdd=0x7f09000d;
-        public static final int etEntry=0x7f090011;
-        public static final int etLot=0x7f09000b;
-        public static final int etOPrice=0x7f090014;
-        public static final int etSL=0x7f090012;
-        public static final int etTP=0x7f090013;
-        public static final int lvForm=0x7f090016;
-        public static final int spPair=0x7f09000a;
-        public static final int tableRow1=0x7f09000e;
-        public static final int tableRow2=0x7f09000f;
-        public static final int tableRow3=0x7f090010;
-        public static final int tableRow4=0x7f090015;
-        public static final int tbtnBuy=0x7f09000c;
-        public static final int tv0=0x7f090001;
-        public static final int tv1=0x7f090002;
-        public static final int tv2=0x7f090003;
-        public static final int tv3=0x7f090004;
-        public static final int tv4=0x7f090005;
-        public static final int tv5=0x7f090006;
-        public static final int tv6=0x7f090007;
-        public static final int tv7=0x7f090008;
+        public static final int LinearLayout1=0x7f080009;
+        public static final int LinearLayout2=0x7f080000;
+        public static final int btnAdd=0x7f08000d;
+        public static final int etEntry=0x7f080011;
+        public static final int etLot=0x7f08000b;
+        public static final int etOPrice=0x7f080014;
+        public static final int etSL=0x7f080012;
+        public static final int etTP=0x7f080013;
+        public static final int lvForm=0x7f080016;
+        public static final int spPair=0x7f08000a;
+        public static final int tableRow1=0x7f08000e;
+        public static final int tableRow2=0x7f08000f;
+        public static final int tableRow3=0x7f080010;
+        public static final int tableRow4=0x7f080015;
+        public static final int tbtnBuy=0x7f08000c;
+        public static final int tv0=0x7f080001;
+        public static final int tv1=0x7f080002;
+        public static final int tv2=0x7f080003;
+        public static final int tv3=0x7f080004;
+        public static final int tv4=0x7f080005;
+        public static final int tv5=0x7f080006;
+        public static final int tv6=0x7f080007;
+        public static final int tv7=0x7f080008;
     }
     public static final class layout {
         public static final int item=0x7f030000;
         public static final int main=0x7f030001;
-    }
-    public static final class menu {
-        public static final int main=0x7f080000;
     }
     public static final class string {
         public static final int action_settings=0x7f050001;
@@ -75,17 +71,6 @@ public final class R {
             res/values-vXX/styles.xml, while customizations related to
             backward-compatibility can go here.
         
-
-        Base application theme for API 11+. This theme completely replaces
-        AppBaseTheme from res/values/styles.xml on API 11+ devices.
-    
- API 11 theme customizations can go here. 
-
-        Base application theme for API 14+. This theme completely replaces
-        AppBaseTheme from BOTH res/values/styles.xml and
-        res/values-v11/styles.xml on API 14+ devices.
-    
- API 14 theme customizations can go here. 
          */
         public static final int AppBaseTheme=0x7f070000;
         /**  Application theme. 

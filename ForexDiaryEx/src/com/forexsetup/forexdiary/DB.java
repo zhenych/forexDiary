@@ -71,6 +71,24 @@ public class DB {
 		mDB.insert(DB_TABLE, null, cv);
 	}
 	
+	void delete(long id) {
+		mDB.delete(DB_TABLE, ID + " = " + id, null);
+	}
+	
+	void update(String pair, int lot ,int date, int entry, 
+			int sl, int tp, int oprice, int pos, long id) {
+		ContentValues cv = new ContentValues();
+		cv.put(PAIR, pair);
+		cv.put(LOT, lot);
+		cv.put(DATE, date);
+		cv.put(ENTRY, entry);
+		cv.put(STOP_LOSS, sl);
+		cv.put(TAKE_PROFIT, tp);
+		cv.put(OUT_PRICE, oprice);
+		cv.put(POSITION, pos);
+		mDB.update(DB_TABLE, cv, ID + " = " + id, null);
+	}
+	
 	// Class 
 	private class DBHelper extends SQLiteOpenHelper {
 

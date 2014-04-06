@@ -1,11 +1,11 @@
 package com.forexsetup.forexdiary;
 
 import java.text.DateFormat;
-import java.text.DecimalFormatSymbols;
+//import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+//import java.util.HashMap;
+//import java.util.Map;
 import java.util.regex.Pattern;
 import android.os.Bundle;
 import android.app.Activity;
@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -47,11 +48,16 @@ public class MainActivity extends Activity implements OnItemSelectedListener, On
 	
 	MyResourceCursorAdapter mrcAdapter;
 	final static boolean  MyAdapter = true;
+	final static String LOG = "myLog";
 	
-	final int MENU_ADD = 1;
-	final int MENU_SORT = 2;
-	final int MENU_ABOUT = 3;
-
+	private static final int C_MENU_EDIT = 10;
+	private static final int C_MENU_DELETE = 11;
+	private static final int C_MENU_CANCEL = 12;	
+	
+	static final int MENU_ADD = 1;
+	static final int MENU_SORT = 2;
+	static final int MENU_ABOUT = 3;
+	
 	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +96,7 @@ public class MainActivity extends Activity implements OnItemSelectedListener, On
 			try {
 				mrcAdapter = new MyResourceCursorAdapter(this, R.layout.item, cursor/*, true*/);
 			}catch (Exception e) {
-				Log.d("myLog", e.getMessage());
+				Log.d(LOG, e.getMessage());
 			}
 			lvForm.setAdapter(mrcAdapter);
 		} else {
@@ -98,7 +104,7 @@ public class MainActivity extends Activity implements OnItemSelectedListener, On
 				scAdapter = new SimpleCursorAdapter(this, R.layout.item,
 						cursor, from, to);
 			} catch (Exception e) {
-				Log.d("myLog", e.getMessage() /* e.getStackTrace().toString() */);
+				Log.d(LOG, e.getMessage() /* e.getStackTrace().toString() */);
 				// e.printStackTrace();
 			}
 			lvForm.setAdapter(scAdapter);
@@ -131,8 +137,35 @@ public class MainActivity extends Activity implements OnItemSelectedListener, On
 		}
 		return true;
 	}
-
-	@SuppressWarnings("deprecation")
+	
+	@Override
+	public void onCreateContextMenu(android.view.ContextMenu menu, View v,
+			android.view.ContextMenu.ContextMenuInfo menuInfo) {
+		
+		menu.add(0, C_MENU_EDIT, 1, "Edit");
+		menu.add(1, C_MENU_DELETE, 2, "Delete");
+		menu.add(/*groupId*/ 0, /*itemId*/ C_MENU_CANCEL, /*order*/ 3, "Cancel");
+		super.onCreateContextMenu(menu, v, menuInfo);
+	};
+	
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		AdapterContextMenuInfo acmi = (AdapterContextMenuInfo) item.getMenuInfo();
+		//Log.d(LOG, "AdapterContextMenuInfo ID " + acmi.id);
+		//Log.d(LOG, "AdapterContextMenuInfo Position " + acmi.position);
+		switch (item.getItemId()) {
+		case C_MENU_EDIT:
+			break;
+		case C_MENU_DELETE:
+			db.delete(acmi.id);
+			cursor.requery();
+			break;
+		case C_MENU_CANCEL:
+			break;
+		}
+		return super.onContextItemSelected(item);
+	}
+		
 	void addRecord() {
 		int lot, date, entry , sl, tp, oprice, pos = 1;
 		String S_lot, S_entry, S_sl, S_tp, S_oprice;
@@ -145,7 +178,7 @@ public class MainActivity extends Activity implements OnItemSelectedListener, On
 		flag = validateDot2(S_lot);
 		if (!flag) {
 			// Toast.makeText(this, "Wrong arguments in lot", Toast.LENGTH_SHORT).show();
-			etLot.setError("Range 100-0.01");
+			etLot.setError("Range 99-0.01");
 			valid = false;
 		}
 
@@ -253,14 +286,12 @@ public class MainActivity extends Activity implements OnItemSelectedListener, On
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position,
 			long id) {
-		
 		spName = parent.getItemAtPosition(position).toString();
 	}
 
 	@Override
 	public void onNothingSelected(AdapterView<?> arg0) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -277,7 +308,6 @@ public class MainActivity extends Activity implements OnItemSelectedListener, On
 		public MyResourceCursorAdapter(Context context, int layout, Cursor c,
 				boolean autoRequery) {
 			super(context, layout, c, autoRequery);
-			// TODO Auto-generated constructor stub
 		}
 
 		//@SuppressLint("NewApi")
@@ -286,7 +316,6 @@ public class MainActivity extends Activity implements OnItemSelectedListener, On
 				//int flags) 
 				{
 			super(context, layout, c);
-			// TODO Auto-generated constructor stub
 		}
 
 		@Override
@@ -319,7 +348,7 @@ public class MainActivity extends Activity implements OnItemSelectedListener, On
 			// divide by 100 to normalize
 			tv2.setText(operation);
 			
-			df = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
+			df = new SimpleDateFormat("yyyy.MM.dd HH:mm");
 			str = df.format(new Date(1000L * cursor.getInt(cursor.getColumnIndex(DB.DATE))));
 			tv3.setText(str);
 			
@@ -333,5 +362,5 @@ public class MainActivity extends Activity implements OnItemSelectedListener, On
 			tv7.setText(String.format("%1.4f",  oprise * 0.0001f));
 		}
 
-	}
+	}// end of inner class
 }

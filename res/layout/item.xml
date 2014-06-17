@@ -11,27 +11,32 @@
 
         <TextView
             android:id="@+id/tv0"
-            android:layout_width="70dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="70"
             android:text="EUR/USD"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <TextView
             android:id="@+id/tv1"
-            android:layout_width="40dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="40"
             android:text="99.99" />
 
         <TextView
             android:id="@+id/tv2"
-            android:layout_width="30dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="30"
             android:text="sell" />
 
         <TextView
             android:id="@+id/tv3"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_weight="140"
+            android:text="0000.00.00 00:00" />
 
     </LinearLayout>
 
@@ -41,23 +46,31 @@
 
         <TextView
             android:id="@+id/tv4"
-            android:layout_width="70dp"
-            android:layout_height="wrap_content" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="70"
+            android:text="0.0000" />
 
         <TextView
             android:id="@+id/tv5"
-            android:layout_width="70dp"
-            android:layout_height="wrap_content" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="70"
+            android:text="0.0000" />
 
         <TextView
             android:id="@+id/tv6"
-            android:layout_width="70dp"
-            android:layout_height="wrap_content" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="70"
+            android:text="0.0000" />
 
         <TextView
             android:id="@+id/tv7"
-            android:layout_width="70dp"
-            android:layout_height="wrap_content" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="70"
+            android:text="0.0000" />
 
     </LinearLayout>
 

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Дневник трейдера</string>
+    <string name="Sort">Сортировка</string>
+    <string name="pair">Валютная пара</string>
+    <string name="period">Период</string>
+    <string name="StartTime">Начало</string>
+    <string name="EndTime">Конец</string>
+    <string name="ProfitInPoints">Прибыль в пунктах</string>
+    <string name="SortList">Сортировать список</string>
+    <string name="CalculatePoints">Посчитать пункты</string>
+
+    <string-array name="SortItems">
+        <item>Прямая</item>
+        <item>Обратная</item>
+    </string-array>
+
+    <string name="CMenuEdit">Редактировать</string>
+    <string name="CMenuDelete">Удалить</string>
+    <string name="CMenuCancel">Отмена</string>
+    <string name="MenuAdvanced">дополнительно</string>
+    <string name="MenuAbout">о программе</string>
+
+</resources>

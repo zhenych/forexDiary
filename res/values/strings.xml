@@ -1,16 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources><string name="app_name">Trader Diary</string>
 
-    <string name="app_name">ForexDiary</string>
-    <string name="action_settings">Settings</string>
     <string-array name="pair">
-        <item >EUR/USD</item>
-        <item >USD/JPY</item>
-        <item >GBP/USD</item>
-        <item >USD/CHF</item>
-        <item >USD/CAD</item>
+        <item>EUR/USD</item>
+        <item>USD/JPY</item>
+        <item>GBP/USD</item>
+        <item>USD/CHF</item>
+        <item>USD/CAD</item>
+        <item >EUR/JPY</item>
+        <item >GBP/CHF</item>
+        <item >AUD/USD</item>
+        <item >NZD/USD</item>
+        <item >EUR/GBP</item>
+        
+        
+        <item >EUR/CHF</item>
+        <item >EUR/CAD</item>
+        <item >EUR/AUD</item>
+        <item >AUD/CAD</item>
+        <item >GBP/JPY</item>
+        <item >CHF/JPY</item>
+        <item >AUD/JPY</item>
+        <item >AUD/NZD</item>
+        <item >GOLD</item>
+        <item >SILVER</item>
+    <item>USD/DKK</item><item>USD/NOK</item></string-array>
+
+    <string name="buy">buy</string>
+    <string name="sell">sell</string>
+    <string name="add_name">+</string>
+    <string name="OK_name">OK</string>
+    <string name="Sort">Sorting</string>
+    <string name="Entry">Entry</string>
+    <string name="StopLoss">Stop loss</string>
+    <string name="TakeProfit">Take profit</string>
+    <string name="OutPrice">Out price</string>
+    <string name="pair">Pair</string>
+    <string name="period">Period</string>
+    <string name="StartTime">StartTime</string>
+    <string name="EndTime">EndTime</string>
+    <string name="ProfitInPoints">Profit in points</string>
+    <string name="SortList">Sort list</string>
+    <string name="CalculatePoints">Calculate points</string>
+
+    <string-array name="SortItems">
+        <item>Forward</item>
+        <item>Backward</item>
     </string-array>
-        <string name="buy">buy</string>
-        <string name="sell">sell</string>
+
+    <string name="SortOrder">date in descending order</string><string name="CMenuEdit">Edit</string>
+    <string name="CMenuDelete">Delete</string>
+    <string name="CMenuCancel">Cancel</string>
+    <string name="MenuAdvanced">advanced</string>
+    <string name="MenuAbout">about</string>
+    <string name="AboutMessage">Written by RR Lab</string>
+    
 
 </resources>

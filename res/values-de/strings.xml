@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Händler Blog</string>
+    <string name="Sort">Sortierung</string>
+    <string name="pair">Währungspaar</string>
+    <string name="period">peiod</string>
+    <string name="StartTime">Startdatum</string>
+    <string name="EndTime">Ende</string>
+    <string name="ProfitInPoints">Profit in den Punkten</string>
+    <string name="SortList">Sortieren Sie die Liste</string>
+    <string name="CalculatePoints">Berechnen Sie Punkte</string>
+    <string name="SortOrder">Datum in absteigender Reihenfolge</string>
+
+    <string-array name="SortItems">
+        <item>Direkt</item>
+        <item>umge</item>
+    </string-array>
+
+    <string name="CMenuEdit">Bearbeiten</string>
+    <string name="CMenuDelete">entfernen</string>
+    <string name="CMenuCancel">Abschaffung</string>
+    <string name="MenuAdvanced">zusätzlich</string>
+    <string name="MenuAbout">über</string>
+
+</resources>

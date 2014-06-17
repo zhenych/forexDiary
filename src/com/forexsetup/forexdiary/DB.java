@@ -1,5 +1,7 @@
 package com.forexsetup.forexdiary;
 
+import java.util.ArrayList;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -40,6 +42,12 @@ public class DB {
 	private DBHelper mDBHelper;
 	private SQLiteDatabase mDB;
 	
+	//Control variables
+	public boolean orderForward = false;// set forward order db view
+	public String pair = "";
+	public long startDate = 0;
+	public long endDate = 0;
+	
 	public DB(Context ctx) {
 		mCtx = ctx;
 	}
@@ -54,7 +62,28 @@ public class DB {
 	}
 	
 	public Cursor getAllData() {
-		return mDB.query(DB_TABLE, null, null, null, null, null, null);
+		String order = "";
+		String selection = "";
+		String selectionArgs[] = null;
+		ArrayList<String> alist = new ArrayList<String>();
+		
+		if (!orderForward) {
+			order = ID + " DESC";
+		}
+		if (pair.length() != 0) {
+			selection += PAIR + " = ? ";
+			alist.add(pair);
+		}
+		if (startDate != 0 && endDate != 0) {
+			if (selection.length() != 0) { selection += " and "; }
+			selection += DATE + " between ? and ?";
+			alist.add(Long.toString(startDate));
+			alist.add(Long.toString(endDate));
+		}
+		if (!alist.isEmpty()) {
+			selectionArgs =  (String[]) alist.toArray(new String[alist.size()]);
+		}
+		return mDB.query(DB_TABLE, null, selection, selectionArgs, null, null, order);
 	}
 	
 	public void addRec(String pair, int lot ,int date, int entry, 
@@ -69,6 +98,24 @@ public class DB {
 		cv.put(OUT_PRICE, oprice);
 		cv.put(POSITION, pos);
 		mDB.insert(DB_TABLE, null, cv);
+	}
+	
+	void delete(long id) {
+		mDB.delete(DB_TABLE, ID + " = " + id, null);
+	}
+	
+	void update(String pair, int lot ,int date, int entry, 
+			int sl, int tp, int oprice, int pos, long id) {
+		ContentValues cv = new ContentValues();
+		cv.put(PAIR, pair);
+		cv.put(LOT, lot);
+		cv.put(DATE, date);
+		cv.put(ENTRY, entry);
+		cv.put(STOP_LOSS, sl);
+		cv.put(TAKE_PROFIT, tp);
+		cv.put(OUT_PRICE, oprice);
+		cv.put(POSITION, pos);
+		mDB.update(DB_TABLE, cv, ID + " = " + id, null);
 	}
 	
 	// Class 

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Щоденник трейдера</string>
+    <string name="Sort">Сортування</string>
+    <string name="pair">Валютна пара</string>
+    <string name="period">Пеіод</string>
+    <string name="StartTime">Початок</string>
+    <string name="EndTime">Кінець</string>
+    <string name="ProfitInPoints">Прибуток в пунктах</string>
+    <string name="SortList">Сортувати список</string>
+    <string name="CalculatePoints">Порахувати пункти</string>
+    <string name="SortOrder">Дата в порядку спадання</string>
+
+    <string-array name="SortItems">
+        <item>Пряме</item>
+        <item>Зворотнє</item>
+    </string-array>
+
+    <string name="CMenuEdit">Редагувати</string>
+    <string name="CMenuDelete">Видалити</string>
+    <string name="CMenuCancel">Відміна</string>
+    <string name="MenuAdvanced">додатково</string>
+    <string name="MenuAbout">про програму</string>
+
+</resources>

@@ -55,6 +55,18 @@
     <string name="MenuAdvanced">advanced</string>
     <string name="MenuAbout">about</string>
     <string name="AboutMessage">Written by RR Lab</string>
+    <string name="btn_Import">Import</string>
+    <string name="btn_Export">Export</string>
+    <string name="rb_comma">comma</string>
+    <string name="rb_semicolon">semicolon</string>
+    <string name="rb_tab">tab</string>
+    <string name="tv_separator">Choise element separator</string>
+    <string name="Dialog_Import_Message">All your current data will be deleted. \nContinue?</string>
+    <string name="Dialog_Import_btnOK">OK</string>
+    <string name="Dialog_Import_Cancel">Cancel</string>
+    <string name="Dialog_Import_ND_Message">There are no data read</string>
+    <string name="Dialog_Import_Invalid_Message">There are invalid data</string>
+    <string name="Dialog_Import_DataOK_Message">Import successful</string>
     
 
 </resources>

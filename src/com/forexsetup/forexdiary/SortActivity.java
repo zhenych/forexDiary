@@ -1,21 +1,30 @@
 package com.forexsetup.forexdiary;
 
+import java.io.BufferedOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
-import java.util.SimpleTimeZone;
-import java.util.TimeZone;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -26,14 +35,26 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.DatePicker;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-public class SortActivity extends Activity implements OnClickListener,
+import com.lamerman.FileDialog;
+import com.lamerman.SelectionMode;
+
+public class SortActivity extends FragmentActivity implements OnClickListener,
 		OnItemSelectedListener {
 
 	final static int DIALOG_DATE_START = 1;
 	final static int DIALOG_DATE_END = 2;
+	final static int DIALOG_IMPORT_PROMPT = 3;
+	final static int DIALOG_IMPORT_NO_DATA = 4;
+	final static int DIALOG_IMPORT_INVALID = 5;
+	final static int DIALOG_IMPORT_DATA_OK = 6;
+	
+	private static final int REQUEST_SAVE = 1;
+	private static final int REQUEST_LOAD = 2;
 
 	int StartYear, StartMonth, StartDay;
 	int EndYear, EndMonth, EndDay;
@@ -49,10 +70,20 @@ public class SortActivity extends Activity implements OnClickListener,
 	CheckBox chbPeriod;
 	CheckBox chbProfit;
 	CheckBox chbOrder;
+	
 	Button btnStartTime;
 	Button btnEndTime;
 	Button btnSortList;
 	Button btnCalcPoints;
+	Button btnImport;
+	Button btnExport;
+	
+	RadioButton rbComma;
+	RadioButton rbSemicolin;
+	RadioButton rbTab;
+	RadioGroup rgSeparator;
+	
+	TextView tvSeparator;
 	TextView tvStartTime;
 	TextView tvEndTime;
 	Spinner spPair;
@@ -76,11 +107,21 @@ public class SortActivity extends Activity implements OnClickListener,
 		btnEndTime = (Button) findViewById(R.id.btnEndTime);
 		btnSortList = (Button) findViewById(R.id.btnSortList);
 		btnCalcPoints = (Button) findViewById(R.id.btnCalcPoints);
+		btnImport = (Button) findViewById(R.id.btnImport);
+		btnExport = (Button) findViewById(R.id.btnExport);
+		
 		// set buttons listener
 		btnStartTime.setOnClickListener(this);
 		btnEndTime.setOnClickListener(this);
 		btnSortList.setOnClickListener(this);
 		btnCalcPoints.setOnClickListener(this);
+		btnImport.setOnClickListener(this);
+		btnExport.setOnClickListener(this);
+		
+		rgSeparator = (RadioGroup) findViewById(R.id.rgSeparator);
+		rbComma = (RadioButton) findViewById(R.id.rb_comma);
+		rbSemicolin = (RadioButton) findViewById(R.id.rb_semicolon);
+		rbTab = (RadioButton) findViewById(R.id.rb_tab);
 
 		tvStartTime = (TextView) findViewById(R.id.tvStartTime);
 		tvEndTime = (TextView) findViewById(R.id.tvEndTime);
@@ -191,6 +232,8 @@ public class SortActivity extends Activity implements OnClickListener,
 
 	@Override
 	public void onClick(View v) {
+		Intent intent;
+		
 		switch (v.getId()) {
 		case R.id.btnStartTime:
 			showDialog(DIALOG_DATE_START);
@@ -200,7 +243,7 @@ public class SortActivity extends Activity implements OnClickListener,
 			break;
 		case R.id.btnSortList:
 			String Str = "";
-			Intent intent = new Intent();
+			intent = new Intent();
 			if (chbPair.isChecked()) {
 				Str = spPair.getItemAtPosition(spPair.getLastVisiblePosition()).toString();
 				sPref.edit().putString(PREF_PAIR, Str).commit();
@@ -213,8 +256,118 @@ public class SortActivity extends Activity implements OnClickListener,
 			setResult(RESULT_OK, intent);
 			finish();
 			break;
+			
+		case R.id.btnImport:
+			showDialog(DIALOG_IMPORT_PROMPT);
+			break;
+			
+		case R.id.btnExport:
+			intent = new Intent(getBaseContext(), FileDialog.class);
+						
+			intent.putExtra(FileDialog.START_PATH, getDirectory());// set directory
+            intent.putExtra(FileDialog.CAN_SELECT_DIR, true); //can user select directories or not 
+            startActivityForResult(intent, REQUEST_SAVE);
+			break;
 		}
 	}
+	
+	void Import() {
+		Intent intent = new Intent(getBaseContext(), FileDialog.class);
+		intent.putExtra(FileDialog.START_PATH, getDirectory());// "/sdcard"
+		intent.putExtra(FileDialog.CAN_SELECT_DIR, true); //can user select directories or not
+		intent.putExtra(FileDialog.SELECTION_MODE, SelectionMode.MODE_OPEN);
+    
+		//alternatively you can set file filter
+		//intent.putExtra(FileDialog.FORMAT_FILTER, new String[] { "png" });
+    
+		startActivityForResult(intent, REQUEST_LOAD);
+	}
+	
+	String getDirectory() {
+		if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+			// *** can write to external storage ***
+			return Environment.getExternalStoragePublicDirectory( Environment.DIRECTORY_DOWNLOADS).toString();
+			//intent.putExtra(FileDialog.START_PATH, Environment.getExternalStorageDirectory().getPath());// "/sdcard"
+		} else {
+			// *** can write to internal storage only ***
+			return getFilesDir().toString();
+		}
+	}
+	
+	public synchronized void onActivityResult(final int requestCode,
+            int resultCode, final Intent data) {
+
+            if (resultCode == Activity.RESULT_OK) {
+            	String path;   	//File file
+            	FileOutputStream fos;
+            	FileInputStream fis;
+            	InputStreamReader isr;
+            	OutputStreamWriter osw;
+            	int rbId =  rgSeparator.getCheckedRadioButtonId();
+            	char es;
+            	
+            	switch (rbId) {
+            	case R.id.rb_comma:
+            		es = DBExport.COMMA;
+            		break;
+            	case R.id.rb_semicolon:
+            		es = DBExport.SEMICOLON;
+            		break;
+            	case R.id.rb_tab:
+            		es = DBExport.TAB;
+            		break;
+            	default:
+            		es = DBExport.COMMA;
+            	}
+
+                    if (requestCode == REQUEST_SAVE) {
+                    	//System.out.println("Saving...");
+                        path = data.getStringExtra(FileDialog.RESULT_PATH);
+                        try {
+                        	fos = new FileOutputStream(path, false);
+							//fos = openFileOutput(path, Context.MODE_WORLD_WRITEABLE);
+							osw = new OutputStreamWriter(new BufferedOutputStream(fos));
+									
+							DBExport dbe = new DBExport(osw, MainActivity.db, es);
+							if (dbe.streamOut()) {
+								Log.d("myLog", "Writing O.K.");
+							}	
+						} catch (FileNotFoundException e) {
+							e.printStackTrace();
+						}
+                                
+                    } else if (requestCode == REQUEST_LOAD) {
+                    	//System.out.println("Loading...");
+                    	path = data.getStringExtra(FileDialog.RESULT_PATH);
+                    	try {
+                    		fis = new FileInputStream(path);
+
+                    		isr = new InputStreamReader(fis);
+                    		MainActivity.db.deleteAll();// delete all data
+                    		DBImport dbi = new DBImport(isr, MainActivity.db, es);
+                    		int result = dbi.writeTable();
+                    		if (result > 0) {
+                    			showDialog(DIALOG_IMPORT_DATA_OK);
+                    		}
+                    		if (result == 0) {
+                    			showDialog(DIALOG_IMPORT_NO_DATA);
+                    		}
+                    		if (result < 0) {
+                    			showDialog(DIALOG_IMPORT_INVALID);
+                    		}
+                    	} catch (FileNotFoundException e) {
+                    		e.printStackTrace();
+                    	}
+                    			
+                    }
+                    String filePath = data.getStringExtra(FileDialog.RESULT_PATH);
+                    System.out.println(filePath);
+
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+                    //Logger.getLogger(AccelerationChartRun.class.getName()).log(Level.WARNING, "file not selected");
+            }
+            //finish();
+    }
 
 	// PERIOD MANIPULATION
 	public void periodSetting() {
@@ -239,6 +392,7 @@ public class SortActivity extends Activity implements OnClickListener,
 	
 	protected Dialog onCreateDialog(int id) {
 		DatePickerDialog dpd;
+		AlertDialog.Builder adb;
 
 		switch (id) {
 		case DIALOG_DATE_START:
@@ -261,8 +415,30 @@ public class SortActivity extends Activity implements OnClickListener,
 			EndMonth = cal.get(Calendar.MONTH);
 			EndDay = cal.get(Calendar.DAY_OF_MONTH);
 			dpd = new DatePickerDialog(this, CallBackEnd, EndYear/* + 1900 */, EndMonth, EndDay);
-			
+	
 			return dpd;
+			
+		case DIALOG_IMPORT_PROMPT:
+			adb = new AlertDialog.Builder(this);
+			adb.setMessage(R.string.Dialog_Import_Message);
+			adb.setPositiveButton(R.string.Dialog_Import_btnOK, ImportListener);
+			adb.setNegativeButton(R.string.Dialog_Import_Cancel, (android.content.DialogInterface.OnClickListener) ImportListener);
+			//adb.setOnKeyListener(onKeyListener);
+			return adb.create();
+		case DIALOG_IMPORT_NO_DATA:
+			adb = new AlertDialog.Builder(this);
+			adb.setMessage(R.string.Dialog_Import_ND_Message);
+			return adb.create();
+			
+		case DIALOG_IMPORT_INVALID:
+			adb = new AlertDialog.Builder(this);
+			adb.setMessage(R.string.Dialog_Import_Invalid_Message);
+			return adb.create();
+			
+		case DIALOG_IMPORT_DATA_OK:
+			adb = new AlertDialog.Builder(this);
+			adb.setMessage(R.string.Dialog_Import_DataOK_Message);
+			return adb.create();
 		}
 		return super.onCreateDialog(id);
 	}
@@ -272,6 +448,20 @@ public class SortActivity extends Activity implements OnClickListener,
 		super.onPrepareDialog(id, dialog, args);
 	}
 	*/
+	
+	android.content.DialogInterface.OnClickListener ImportListener = new android.content.DialogInterface.OnClickListener() {
+		
+		public void onClick(DialogInterface dialog, int which) {
+			switch (which) {
+			case Dialog.BUTTON_POSITIVE:
+				Import();
+				break;
+				
+			case Dialog.BUTTON_NEGATIVE:
+				break;
+			}
+		}
+	};
 	
 	OnDateSetListener CallBackStart = new OnDateSetListener() {
 

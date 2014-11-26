@@ -89,6 +89,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
+        <Button
+            android:id="@+id/btnSortList"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/SortList" />
+
+        <Button
+            android:id="@+id/btnCalcPoints"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/CalculatePoints"
+            android:visibility="invisible" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
         <CheckBox
             android:id="@+id/chbProfit"
             android:layout_width="wrap_content"
@@ -108,17 +127,59 @@
         android:layout_height="wrap_content" >
 
         <Button
-            android:id="@+id/btnSortList"
+            android:id="@+id/btnImport"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/SortList" />
+            android:layout_gravity="left"
+            android:layout_weight="1"
+            android:text="@string/btn_Import" />
 
         <Button
-            android:id="@+id/btnCalcPoints"
+            android:id="@+id/btnExport"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/CalculatePoints"
-            android:visibility="invisible" />
+            android:layout_gravity="right"
+            android:layout_weight="1"
+            android:text="@string/btn_Export" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/tv_separator"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:text="@string/tv_separator"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <RadioGroup
+            android:id="@+id/rgSeparator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <RadioButton
+                android:id="@+id/rb_comma"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="@string/rb_comma" />
+
+            <RadioButton
+                android:id="@+id/rb_semicolon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/rb_semicolon" />
+
+            <RadioButton
+                android:id="@+id/rb_tab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/rb_tab" />
+        </RadioGroup>
 
     </LinearLayout>
 

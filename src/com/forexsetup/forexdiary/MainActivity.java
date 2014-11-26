@@ -60,8 +60,8 @@ public class MainActivity extends FragmentActivity implements
 	AdView adBottom;
 	
 	Cursor cursor_old; // test pre v11 and newer android api
-	DB db;
-	boolean oldCursor = false;// test pre v11 and newer android api
+	static DB db;
+	final static boolean oldCursor = false;// test pre v11 and newer android api
 	//Loader<Cursor> CLoader;
 	MyCursorLoader CLoader;
 	
@@ -321,6 +321,8 @@ public class MainActivity extends FragmentActivity implements
 			// There are no results 
 			break;
 		}
+		// Must reload cursor of MainActivity 
+		getSupportLoaderManager().getLoader(0).forceLoad();
 	}
 	
 	@Override

@@ -41,6 +41,7 @@ public class DB {
 	private final Context mCtx;
 	private DBHelper mDBHelper;
 	private SQLiteDatabase mDB;
+	private static DB instance = null;
 	
 	//Control variables
 	public boolean orderForward = false;// set forward order db view
@@ -48,8 +49,12 @@ public class DB {
 	public long startDate = 0;
 	public long endDate = 0;
 	
+	
+	
+	// Constructor
 	public DB(Context ctx) {
 		mCtx = ctx;
+		instance = this;
 	}
 	
 	public void open(){
@@ -63,9 +68,9 @@ public class DB {
 	
 	public Cursor getAllData() {
 		String order = "";
-		String selection = "";
+		String selection = ""; // formula for a quarry
 		String selectionArgs[] = null;
-		ArrayList<String> alist = new ArrayList<String>();
+		ArrayList<String> alist = new ArrayList<String>(); // arguments for the selection formula
 		
 		if (!orderForward) {
 			order = ID + " DESC";
@@ -86,6 +91,14 @@ public class DB {
 		return mDB.query(DB_TABLE, null, selection, selectionArgs, null, null, order);
 	}
 	
+	public Cursor getExportData() {
+		
+		String order;
+		order = "";	//	order = ID + " DESC";
+		
+		return mDB.query(DB_TABLE, null, null, null, null, null, order);
+	}
+	
 	public void addRec(String pair, int lot ,int date, int entry, 
 			int sl, int tp, int oprice, int pos) {
 		ContentValues cv = new ContentValues();
@@ -104,6 +117,10 @@ public class DB {
 		mDB.delete(DB_TABLE, ID + " = " + id, null);
 	}
 	
+	void deleteAll() {
+		mDB.delete(DB_TABLE, null, null);
+	}
+	
 	void update(String pair, int lot ,int date, int entry, 
 			int sl, int tp, int oprice, int pos, long id) {
 		ContentValues cv = new ContentValues();
@@ -116,6 +133,10 @@ public class DB {
 		cv.put(OUT_PRICE, oprice);
 		cv.put(POSITION, pos);
 		mDB.update(DB_TABLE, cv, ID + " = " + id, null);
+	}
+	
+	static DB getInstance() {
+		return instance;
 	}
 	
 	// Class 

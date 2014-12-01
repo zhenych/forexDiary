@@ -54,6 +54,7 @@ public class MainActivity extends FragmentActivity implements
 	EditText etSL;
 	EditText etTP;
 	EditText etOprice;
+	EditText etPosition;
 	
 	Button btnAdd;
 	ToggleButton tbtnBuy;
@@ -145,6 +146,7 @@ public class MainActivity extends FragmentActivity implements
 		etSL = (EditText) findViewById(R.id.etSL);
 		etTP = (EditText) findViewById(R.id.etTP);
 		etOprice = (EditText) findViewById(R.id.etOPrice);
+		etPosition = (EditText) findViewById(R.id.etComment);
 		
 		btnAdd = (Button) findViewById(R.id.btnAdd);
 		btnAdd.setOnClickListener(this);
@@ -404,11 +406,13 @@ public class MainActivity extends FragmentActivity implements
 		etTP.setText(String.format(Locale.US, "%1.4f",  tp * 0.0001f));
 		oprice = cursorLocal.getInt(cursorLocal.getColumnIndex(DB.OUT_PRICE));
 		etOprice.setText(String.format(Locale.US, "%1.4f",  oprice * 0.0001f));
+		etPosition.setText(cursorLocal.getColumnIndex(DB.POSITION));
 	}
 
 	boolean addRecord(int command, long data) {
-		int lot, date, entry , sl, tp, oprice, pos = 1;
-		String S_lot, S_entry, S_sl, S_tp, S_oprice;
+		int lot, date, entry , sl, tp, oprice;
+		//int pos = 1;
+		String S_lot, S_entry, S_sl, S_tp, S_oprice, S_pos;
 		float fTmp;
 		boolean flag, valid = true;
 		//int command; // to determinate operation with data
@@ -454,6 +458,11 @@ public class MainActivity extends FragmentActivity implements
 			valid = false;
 		}
 		
+		//Position Comment
+		if (etPosition.getText().length() > 255) {
+			etPosition.setError("Max is 255 characters");
+			valid = false;
+		}
 		
 		// if one or more strings are not validate
 		if (!valid) {
@@ -491,13 +500,16 @@ public class MainActivity extends FragmentActivity implements
 		fTmp = Float.valueOf(S_oprice);
 		oprice = (int) (10000 * fTmp);// *10000 for save 4 symbols after point
 		
+		// Position Comment
+		S_pos = etPosition.getText().toString();
+		
 		//database access
 		switch (command) {
 		case RECORD_ADD:
-			db.addRec(spName, lot, date, entry, sl, tp, oprice, pos);	
+			db.addRec(spName, lot, date, entry, sl, tp, oprice, S_pos);	
 			break;
 		case RECORD_UPDATE:
-			db.update(spName, lot, date, entry, sl, tp, oprice, pos, data);
+			db.update(spName, lot, date, entry, sl, tp, oprice, S_pos, data);
 		}
 
 		if (oldCursor) {
@@ -651,6 +663,7 @@ public class MainActivity extends FragmentActivity implements
 			DateFormat df;
 			String operation;
 			int lot, entry, sl, tp, oprice;
+			String position;
 			
 			TextView tv0 = (TextView) view.findViewById(R.id.tv0);
 			TextView tv1 = (TextView) view.findViewById(R.id.tv1);
@@ -661,6 +674,7 @@ public class MainActivity extends FragmentActivity implements
 			TextView tv5 = (TextView) view.findViewById(R.id.tv5);
 			TextView tv6 = (TextView) view.findViewById(R.id.tv6);
 			TextView tv7 = (TextView) view.findViewById(R.id.tv7);
+			TextView tvItemComment = (TextView) view.findViewById(R.id.tvItemComment);
 			
 			lot = cursor.getInt(cursor.getColumnIndex(DB.LOT));
 			if (Integer.signum(lot) < 0) {
@@ -688,6 +702,8 @@ public class MainActivity extends FragmentActivity implements
 			tv6.setText(String.format("%1.4f",  tp * 0.0001f));
 			oprice = cursor.getInt(cursor.getColumnIndex(DB.OUT_PRICE));
 			tv7.setText(String.format("%1.4f",  oprice * 0.0001f));
+			position = cursor.getString(cursor.getColumnIndex(DB.POSITION));
+			tvItemComment.setText(position);
 		}
 
 	}// end of inner class MyResourceCursorAdapter

@@ -67,6 +67,7 @@
     <string name="Dialog_Import_ND_Message">There are no data read</string>
     <string name="Dialog_Import_Invalid_Message">There are invalid data</string>
     <string name="Dialog_Import_DataOK_Message">Import successful</string>
+    <string name="comment">Please enter you comment</string>
     
 
 </resources>

@@ -74,4 +74,12 @@
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/tvItemComment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="2"
+        android:text="Comment Small Text"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
 </LinearLayout>

@@ -100,7 +100,7 @@ public class DB {
 	}
 	
 	public void addRec(String pair, int lot ,int date, int entry, 
-			int sl, int tp, int oprice, int pos) {
+			int sl, int tp, int oprice, String pos) {
 		ContentValues cv = new ContentValues();
 		cv.put(PAIR, pair);
 		cv.put(LOT, lot);
@@ -122,7 +122,7 @@ public class DB {
 	}
 	
 	void update(String pair, int lot ,int date, int entry, 
-			int sl, int tp, int oprice, int pos, long id) {
+			int sl, int tp, int oprice, String pos, long id) {
 		ContentValues cv = new ContentValues();
 		cv.put(PAIR, pair);
 		cv.put(LOT, lot);

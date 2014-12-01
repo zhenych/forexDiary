@@ -56,7 +56,7 @@ protected String [] readLine() {
 					, Integer.valueOf(line [4])//sl
 					, Integer.valueOf(line [5])//tp
 					, Integer.valueOf(line [6])//oprice
-					, Integer.valueOf(line [7])//pos
+					, line [7]//pos
 							);
 			lNumber++;
 		}
